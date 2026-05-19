@@ -61,41 +61,68 @@ PDF → Loader → Chunking → Embeddings → ChromaDB → Retrieval → LangGr
 
 ## 📁 Project Structure
 
-Advanced-LangChain-LangGraph-Part1/
-├── notebooks/
-├── data/
-├── chroma_db/
-├── database/
-├── exports/
-├── .env
+```
+.
+├── notebooks/       # Week 6 tutorial notebook
+├── src/             # Shared config (env loading)
+├── scripts/         # Maintenance utilities (e.g. sanitize_notebook.py)
+├── data/            # Sample PDFs and RAG documents
+├── .env.example     # Secret template (copy to .env)
 ├── requirements.txt
 └── README.md
+```
+
+`chroma_db/`, `database/`, and `.env` are gitignored.
 
 ---
 
 ## ⚡ Quick Start
 
-git clone <repo>
-cd project
-
+```bash
+git clone <your-repo-url>
+cd "Advanced LangChain & LangGraph (part 1)"
 python -m venv .venv
-source .venv/bin/activate
+.venv\Scripts\activate          # Windows
+# source .venv/bin/activate     # macOS / Linux
 pip install -r requirements.txt
-jupyter notebook
+copy .env.example .env          # then edit .env with your keys
+jupyter notebook notebooks/week6_advanced_langgraph.ipynb
+```
 
 ---
 
 ## ⚙️ Configuration
 
-GROQ_API_KEY=your_api_key_here
+Copy `.env.example` to `.env` and set:
+
+| Variable | Required | Description |
+|----------|----------|-------------|
+| `GROQ_API_KEY` | Yes | [Groq API key](https://console.groq.com/keys) |
+| `POSTGRES_PASSWORD` | For DB cells | Local PostgreSQL password |
+| `POSTGRES_HOST` | No | Default `localhost` |
+| `POSTGRES_USER` | No | Default `postgres` |
+| `POSTGRES_DB` | No | Default `langchain_db` |
+
+**Never commit `.env` or print API keys in notebook outputs.**
+
+---
+
+## 🔒 Security
+
+- API keys and DB passwords live only in `.env` (see `.env.example`).
+- Do not print `GROQ_API_KEY` in notebook cells or commit notebook outputs.
+- If a key was exposed, rotate it at [Groq Console](https://console.groq.com/keys) before pushing.
 
 ---
 
 ## 🐛 Troubleshooting
 
-- Check .env file
-- Reinstall dependencies
-- Clear chroma_db if needed
+| Issue | Fix |
+|-------|-----|
+| `GROQ_API_KEY is not set` | Copy `.env.example` → `.env` and add your key |
+| GitHub Push Protection | Remove secrets from files/history, rotate key, push again |
+| ChromaDB errors | Delete `chroma_db/` and re-run ingestion cells |
+| PostgreSQL errors | Ensure Postgres is running; check `.env` credentials |
 
 ---
 
